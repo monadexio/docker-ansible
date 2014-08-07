@@ -1,0 +1,6 @@
+# This playbook configures the docker instance
+
+- hosts: "{{ hosts }}"
+  tasks:
+    - name: print a debug msg
+      debug: "nice, i am executed."
