@@ -23,11 +23,11 @@ EOF
 
 print_info(){
 cat <<EOF
-Current setup:
-- Seal docker ansible root directory: $SEAL_ANSIBLE_DOCKER_ROOT
-- Seal docker ansible inventory file: $SEAL_ANSIBLE_DOCKER_INVENTORY_FILE
-- Seal docker ansible hostname: $SEAL_ANSIBLE_DOCKER_HOSTNAME
-- Seal docker ansible playbook: $SEAL_ANSIBLE_DOCKER_PLAYBOOK
+Current setup for Seal docker ansible:
+- root directory: $SEAL_ANSIBLE_DOCKER_ROOT
+- inventory file: $SEAL_ANSIBLE_DOCKER_INVENTORY_FILE
+- hostname: $SEAL_ANSIBLE_DOCKER_HOSTNAME
+- playbook: $SEAL_ANSIBLE_DOCKER_PLAYBOOK
 EOF
 }
 
