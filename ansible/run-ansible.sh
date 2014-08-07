@@ -9,6 +9,7 @@ OPTIONS:
     -i       Path to the inventory file
     -p       Path to the playbook to be executed
     -r       Path to the docker ansible directory
+    -c       Connection type for ansible. Could be smart/ssh/local, default to smart.
 
 If -i and -p is not specified, they will be dirived from the path to the docker
 ansible directory. If -r is not specified, it will be set to the current directory.
@@ -31,7 +32,7 @@ Current setup for Seal docker ansible:
 EOF
 }
 
-while getopts "h:i:p:r:v" OPTION
+while getopts "h:i:p:r:c:v" OPTION
 do
     case $OPTION in
         h)
@@ -45,6 +46,9 @@ do
             ;;
         r)
             SEAL_ANSIBLE_DOCKER_ROOT="$OPTARG"
+            ;;
+        c)
+            SEAL_ANSIBLE_DOCKER_CONNECTION="$OPTARG"
             ;;
         v)
             SEAL_ANSIBLE_DOCKER_VERBOSE="TRUE"
@@ -72,8 +76,15 @@ if [ -z "$SEAL_ANSIBLE_DOCKER_INVENTORY_FILE" ]; then
     SEAL_ANSIBLE_DOCKER_INVENTORY_FILE="$SEAL_ANSIBLE_DOCKER_ROOT/target"
 fi
 
+if [ -z "$SEAL_ANSIBLE_DOCKER_CONNECTION" ]; then
+    SEAL_ANSIBLE_DOCKER_CONNECTION="smart"
+fi
+
 if [ "$SEAL_ANSIBLE_DOCKER_VERBOSE" == "TRUE" ]; then
     print_info
 fi
 
-ansible-playbook -i "$SEAL_ANSIBLE_DOCKER_INVENTORY_FILE" --extra-vars="hosts=$SEAL_ANSIBLE_DOCKER_HOSTNAME" "$SEAL_ANSIBLE_DOCKER_PLAYBOOK"
+ansible-playbook -i "$SEAL_ANSIBLE_DOCKER_INVENTORY_FILE" \
+    -c "$SEAL_ANSIBLE_DOCKER_CONNECTION" \
+    --extra-vars="hosts=$SEAL_ANSIBLE_DOCKER_HOSTNAME" \
+    "$SEAL_ANSIBLE_DOCKER_PLAYBOOK"
