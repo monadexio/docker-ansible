@@ -10,6 +10,7 @@ OPTIONS:
     -p       Path to the playbook to be executed
     -r       Path to the docker ansible directory
     -c       Connection type for ansible. Could be smart/ssh/local, default to smart.
+    -v       Verbose mode
 
 If -i and -p is not specified, they will be dirived from the path to the docker
 ansible directory. If -r is not specified, it will be set to the current directory.
@@ -17,7 +18,7 @@ ansible directory. If -r is not specified, it will be set to the current directo
 Default value for -h is localhost
 
 example:
-$0 -i /path/to/inventory_file -p /path/to/playbook -h hostname
+$0 -i /path/to/inventory_file -p /path/to/playbook -h hostname -v
 
 EOF
 }
