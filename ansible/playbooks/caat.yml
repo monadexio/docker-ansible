@@ -1,0 +1,4 @@
+# This playbook installs and configures CAAT
+
+- name: download caat
+  debug: msg="i am supposed to download caat"

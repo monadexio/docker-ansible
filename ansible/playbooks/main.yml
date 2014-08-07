@@ -2,5 +2,8 @@
 
 - hosts: "{{ hosts }}"
   tasks:
-    - name: print a debug msg
-      debug: "nice, i am executed."
+    - name: start ansible
+      debug: msg="ansible will start to configure this docker instance"
+
+    - include: caat.yml
+
