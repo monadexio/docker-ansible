@@ -5,5 +5,9 @@
     - name: start ansible
       debug: msg="ansible will start to configure this docker instance"
 
-    - include: caat.yml
+    - include: couchdb.yml
+      vars:
+        couchdb_dir: "/var/run/couchdb/"
+        seal_couch_dir: "/seal/couchdb/"
 
+    - include: caat.yml

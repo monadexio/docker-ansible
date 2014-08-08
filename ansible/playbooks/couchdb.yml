@@ -1,0 +1,29 @@
+# This playbook installs and configures couchdb
+
+- name: installs couchdb
+  apt: name=couchdb
+
+- name: create /var/run/couchdb directory
+  file: path={{ couchdb_dir }} state=directory
+
+- name: create /seal/couchdb directory
+  file: path={{ seal_couch_dir }} state=directory
+
+- name: sym-link /var/lib/couchdb to /seal/couchdb/data
+  file: src={{ couchdb_dir }} dest={{ seal_couch_dir }}/data state=link
+
+- name: bind couch address to 0.0.0.0
+  ini_file:
+    dest=/etc/couchdb/local.ini
+    section=httpd
+    option=bind_address
+    value=0.0.0.0
+    backup=yes
+
+- name: create admin account
+  ini_file:
+    dest=/etc/couchdb/local.ini
+    section=admins
+    option=devadmin
+    value=devadmin123
+    backup=yes
