@@ -1,0 +1,30 @@
+# This playbook installs and configures apollo mq
+
+- name: create a temp directory
+  command: mktemp -d /tmp/ansible-apollo-XXXX
+  register: tempdir
+
+- name: download apollo
+  get_url:
+    url="http://apache.mirrors.spacedump.net/activemq/activemq-apollo/{{ version }}/apache-apollo-{{ version }}-unix-distro.tar.gz"
+    dest={{ tempdir.stdout }}
+
+- name: untar apollo and put it into /opt/
+  command: tar xvfz {{ tempdir.stdout }}/apache-apollo-{{ version }}-unix-distro.tar.gz -C /opt/
+
+- name: sym-link /opt/apache-apollo-{{ version }} to /opt/apollo
+  file: src=/opt/apache-apollo-{{ version }} dest=/opt/apollo state=link
+
+- name: create apollo broker
+  command: /opt/apollo/bin/apollo create create --host 0.0.0.0 /opt/apollo-broker
+
+# FIXME: use replace module
+- name: bind apollo to 0.0.0.0
+  command: sed -i s/'127.0.0.1:61680'/'0.0.0.0:61680'/ /opt/apollo-broker/etc/apollo.xml
+
+# FIXME: use replace module
+- name: add another hostname
+  command: sed -i s/'<host_name>127.0.0.1<\/host_name>'/'<host_name>127.0.0.1<\/host_name><host_name>192.168.59.103<\/host_name>'/ /opt/apollo-broker/etc/apollo.xml
+
+- name: clean up the temp dir
+  file: path={{ tempdir.stdout }} state=absent

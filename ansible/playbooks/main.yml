@@ -10,4 +10,10 @@
         couchdb_dir: "/var/run/couchdb/"
         seal_couch_dir: "/seal/couchdb/"
 
+    - include: apollo.yml
+      vars:
+        version: 1.7
+
     - include: caat.yml
+      vars:
+        version: 3.15.0-20140807

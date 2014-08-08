@@ -1,4 +1,14 @@
 # This playbook installs and configures CAAT
 
+- name: create a temp directory
+  command: mktemp -d /tmp/ansible-caat-XXXX
+  register: tempdir
+
+- name: print url
+  debug: msg="https://jenkins.seal-software.com:44881/content/repositories/releases/com/seal/sca-caat/{{ version }}/sca-caat-{{ version }}.jar"
+
 - name: download caat
-  debug: msg="i am supposed to download caat"
+  command: wget --user "developer" --password "NwTiUe6#" "https://jenkins.seal-software.com:44881/content/repositories/releases/com/seal/sca-caat/{{ version }}/sca-caat-{{ version }}.jar" -P {{ tempdir.stdout }}
+
+- name: unzip caat and put it into /opt/
+  command: jar xf {{ tempdir.stdout }}/sca-caat-{{ version }}.jar; mv index /opt/sca-caat
